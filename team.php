@@ -55,8 +55,28 @@ class Team{
         $this->defenseModifier = $update * (10 - ($this->attackPoints + $this->attackSpeed));
     }
     
+    /**
+     * Verify the user can move with the amount input on the move.
+     * 
+     * @param int length on the X axis
+     * @param int height on the Y axis
+     * 
+     * @return array of integer locations
+     */
     public function move($x, $y){
+        $returnX = $x;
+        if(!((int)$x >= $this->movementSpeed)){
+           $returnX = null;
+           print "Latitude Penalty!\n";
+        }
         
+        $returnY = $y;
+        if(!((int)$y >= $this->movementSpeed) ){
+           $returnY = null;
+           print "Longitude Penalty\n";
+        }
+        
+        return array('x' => $returnX, 'y' => $returnY);
     }
     
     
