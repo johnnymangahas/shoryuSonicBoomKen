@@ -1,6 +1,7 @@
 # shoryuSonicBoomKen
 This is a fun code concept to simulate attacks, defense, and movement. 
-For simplicity, attacks always hit but I will use distance and defensive modifiers to simulate partial hits. 
+For simplicity, attacks always hit but I will use distance and defensive modifiers to simulate partial hits.
+Also, the game's first rendition will be a turn based system. 
  
 The "game" will load by command line with the size of a map in X and Y coordinates and a number of players. 
 If no parameters are given, then a default of 10x10 map and 2 players will be given. 
@@ -12,9 +13,13 @@ Attack Speed (length of time in seconds between attack),
 Defensive Modifier (percent modifier on hit range), 
 Movement Speed (how many spaces a player can move per turn)  
 
-Once the teams/players are set, a command prompt will be entered: 
-1 for attack, 2 for movement, {blank} enter for random
+Nice To Have: 
+1) A way to simulate a team's thought process to fight or flight (move) depending on current health points, hit ability, etc.
+2) Service the distance of each team from each other. Currently re-checking the distance each turn.
+3) Boost modifiers for attacks and defense.
 
-The next team/player will only have 1 option to move or attack, and the next team will have an option. 
+Once the teams/players are set, a random binary selection will determine the course
+of action for each player: 
+1 for attack, 0 for movement
 
-The game will end when a team/player has no healh points left.
+This will continue until there is one team left, the eventual winner.

@@ -44,8 +44,8 @@ class Map {
         
         //For simplicity, the array index equals the team number in the teams array
         for($i = 0; $i < $this->totalTeams; $i++){
-            $latitude = rand(0, $this->length);
-            $longitude = rand(0, $this->height);
+            $latitude = mt_rand(0, $this->length);
+            $longitude = mt_rand(0, $this->height);
             $this->teamLocations[] = array('x'=>$latitude, 'y'=>$longitude);
         }
     }
