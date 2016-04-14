@@ -31,10 +31,13 @@ for($i = 0; $i < $numTeams;$i++){
 }
 
 // Battle Time! - Begin series of movements and attacks till all but 1 team is alive
-// In a more modernized game, a client would make the calls to backend endpoints. 
-// For simplicity, we will make the endpoint "calls" here by random generator.
+// In a more modernized game, a client would make the calls to backend endpoints, 
+//  the client would also output the view values.
+// For simplicity, we will make the endpoint "calls" here by random generator in 
+// the switch statement below. If I had more time, I'd have liked to have designed
+// a more human like way of deducting a fight or flight action.
 do{
-    $deadTeams = 0;
+    
     foreach($teamsArray as $index=>$teamAction){
         //This team's turn to random pick an action. Would like to add an aggression
         //modifier to enhance a simulation team's choice to fight or flight
@@ -59,8 +62,10 @@ do{
                     //Subtract the damage from the opponent
                     $opponentHP = $teamsArray[$teamIndex]->adjustHealthPoints($damage);
                     print "Team".$index." attacks Team".$teamIndex." for hit cost: -".$damage." HP\n";
+                    
+                    //Team has no health left after attack, pop team out of the array
+                    // and re-organize the array
                     if($opponentHP <= 0){
-                        $deadTeams++;
                         unset($teamsArray[$teamIndex]);
                         $teamsArray = array_values($teamsArray);
                         print "Team".$teamIndex." has lost!\n";
@@ -69,10 +74,12 @@ do{
                 
                 break;
             default:
+                //Get the movementSpeed of Team and randomize X and Y distance
                 $teamSpeed = $teamAction->getMovementSpeed();
                 $xMovement = mt_rand(-$teamSpeed, $teamSpeed);
                 $yMovement = mt_rand(-$teamSpeed, $teamSpeed);
                 
+                //Call on the map object to move the player
                 $gameMap->teamMovement($xMovement, $yMovement, $index);
                 print "Team".$index." chooses to move\n";
                 
