@@ -9,15 +9,15 @@ class Team{
     private $defenseModifier; //Modifier of attack hit + Speed from 10
     private $aggressionModifier; //Fight or flight type of player
     
-    function __construct($name, $x, $y, $hp=100, $ap, $as, $movSpeed=2) {
+    function __construct($name, $x, $y, $hp=100) {
         $this->name = $name;
         $this->healthPoints = $hp;
         
         //Attack is balanced in that if the player hits big then speed is slower, 
         // and vice versa. The minimum is 3 so that the range of total damage is closer.
-        $this->attackPoints = ($ap) ?: mt_rand(3,10);
-        $this->attackSpeed = ($as) ?: mt_rand(3,(10-$this->attackPoints));
-        $this->movementSpeed = $movSpeed;
+        $this->attackPoints = mt_rand(3,10);
+        $this->attackSpeed = 10-$this->attackPoints;
+        $this->movementSpeed = mt_rand(2,4);
         
         //To prevent ULTIMATE GODLY teams and provide balance, a defense modifier 
         //is set based on speed and attackPoints. The higher a team can attack, 
@@ -26,6 +26,10 @@ class Team{
         
         //$this->setAggressionModifier();
         //return $this;
+    }
+    
+    public function getName(){
+        return $this->name;
     }
     
     /**
@@ -47,6 +51,11 @@ class Team{
         return $this->defenseModifier;
     }
     
+    /**
+     *  Getter function for movementSpeed
+     * 
+     * @return int $movementSpeed
+     */
     public function getMovementSpeed(){
         return $this->movementSpeed;
     }
@@ -76,7 +85,7 @@ class Team{
             if($distanceMod){
                 //Stay true to attack always hitting. The furher away, the less
                 // potential damage
-                $min = (floor($trueHitValue * (1-($distance%100)/100)) >= 1) ?: 1;
+                $min = (floor($trueHitValue * (1-($distanceMod%100)/100)) >= 1) ?: 1;
                 $trueHitValue = mt_rand($min, $trueHitValue); 
             }
             

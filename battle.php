@@ -1,5 +1,3 @@
-#!/bin/php
-
 <?php
 //require classes here. In a current era mobile game, an autoloader would be here.
 require "./map.php";
@@ -14,7 +12,7 @@ $mapHeight = (!empty($options['y'])) ? $options['y'] : 10;
 $numTeams = (!empty($options['numTeams'])) ? $options['numTeams'] : 2;
 
 //Create the new Game Map
-$gameMap = new Map($mapLength, $mapHeight, $numTeams);
+$gameMap = Map::getInstance($mapLength, $mapHeight, $numTeams);
           
 // Set the array of Team Objects
 $teamsArray = array();
@@ -40,6 +38,7 @@ do{
     foreach($teamsArray as $index=>$teamAction){
         //This team's turn to random pick an action. Would like to add an aggression
         //modifier to enhance a simulation team's choice to fight or flight
+        print "\nTeam".$index."'s Turn...\n";
         switch(mt_rand(0,1)){
             case 1:
                 $distances = array();
@@ -59,25 +58,27 @@ do{
                     
                     //Subtract the damage from the opponent
                     $opponentHP = $teamsArray[$teamIndex]->adjustHealthPoints($damage);
-                    print "Team".$teamIndex." hit: -".$damage." HP\n";
+                    print "Team".$index." attacks Team".$teamIndex." for hit cost: -".$damage." HP\n";
                     if($opponentHP <= 0){
                         $deadTeams++;
+                        unset($teamsArray[$teamIndex]);
+                        $teamsArray = array_values($teamsArray);
                         print "Team".$teamIndex." has lost!\n";
                     }
                 }
                 
                 break;
-            case 0:
+            default:
                 $teamSpeed = $teamAction->getMovementSpeed();
                 $xMovement = mt_rand(-$teamSpeed, $teamSpeed);
                 $yMovement = mt_rand(-$teamSpeed, $teamSpeed);
                 
-                $gameMap->teamMovement($xMovement, $yMovement, $teamIndex);
-                print "Team".$teamIndex." chooses to move";
+                $gameMap->teamMovement($xMovement, $yMovement, $index);
+                print "Team".$index." chooses to move\n";
                 
                 break;
         }
     }
-}while($deadTeams < count($teamsArray)-1);
+}while(count($teamsArray) != 1);
 
-print "Team ".$teamsArray[0]->name." WINS!";
+print "\n\nTeam ".$teamsArray[0]->getName()." WINS!\n\n";

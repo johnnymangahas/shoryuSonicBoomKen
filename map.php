@@ -23,7 +23,7 @@ class Map {
      */
     public static function getInstance($x=10, $y=10, $numTeams=2){
         if(null == static::$mapInstance){
-            static::$mapInstance = new Map($x, $y);
+            static::$mapInstance = new Map($x, $y, $numTeams);
         }
         
         return static::$mapInstance;
